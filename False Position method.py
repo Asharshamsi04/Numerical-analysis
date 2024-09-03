@@ -1,90 +1,158 @@
+
+
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Define the function whose roots are required
 def f(x):
-    # return x**3+x**2-3*x-3
-    return np.exp(x) - 3 * x 
+    """
+    Function for which we are finding the root.
+    f(x) = math.exp(x) - 3 * x
+    """
+    return np.exp(x) - 3 * x  # Element-wise operations (assuming x is a NumPy array)
 
-# Input Parameters
-N = 50           # Max. number of iterations
-eps = 0.01       # Acceptable Error (%) 
-xl = 1           # Lower bound on the root
-xu = 2           # Upper bound on the root
+def false_position_method(a, b, tol, max_iter=100):
+    """
+    Finds the root of the function f(x) using the False Position Method and prints
+    iteration details. Also plots the function and the approximation steps.
 
-# Initialize figure for plotting
-fig = plt.figure(figsize=(8, 8), dpi=120)
+    Parameters:
+    a : float
+        The lower bound of the interval.
+    b : float
+        The upper bound of the interval.
+    tol : float
+        The tolerance for the convergence criteria.
+    max_iter : int
+        The maximum number of iterations (default is 100).
 
-# Plot the given function
-x = np.linspace(xl - 0.5, xu + 0.5, 1000)
-y = f(x)
-plt.plot(x, y, linewidth=3)
-plt.axhline(y=0, c='black', linewidth=1)
+    Returns:
+    float
+        The approximate root of the function.
+    """
 
-# Check if initial guesses bracket a root
-if f(xl) * f(xu) >= 0:
-    print("Bisection method fails.")
-    plt.show()
-    exit()
+    if f(a) * f(b) >= 0:  # Ensures opposite signs at endpoints
+        raise ValueError("No root found in the interval; f(a) and f(b) must have opposite signs.")
 
-# Print the table header
-print('------------------------------------------------------------------------------------------------')
-print('iter \t\t xl \t\t xu \t\t xm \t\t Epsilon% \t f(xm)')
-print('------------------------------------------------------------------------------------------------')
+    iteration = 0
+    previous_c = None
+    c_values = []  # Store the values of c for plotting
 
-xm_list = []
-Epsilon = []
-
-for i in range(N):
-    xm = (xl + xu) / 2
-    xm_list.append(xm)
-
-    # Compute Epsilon
-    if i > 0:
-        Epsilon.append(abs((xm_list[i] - xm_list[i - 1]) / xm_list[i] * 100))
-    else:
-        Epsilon.append(100)  # Initial iteration
-
-    # Plot the current iteration
-    plt.title(f"Iteration #{i+1}\n\nxl = {xl:.8f}; xu = {xu:.8f}; xm = {xm:.8f}; f(xm) = {f(xm):.8f}")
-    plt.xlabel('x')
-    plt.ylabel('y')
-
-    # Plot and annotate points
-    plt.scatter(xl, f(xl), c='blue', s=250, alpha=0.5)
-    plt.scatter(xu, f(xu), c='blue', s=250, alpha=0.5)
-    plt.axvline(x=xl, c='blue', linewidth=2, alpha=0.5)
-    plt.axvline(x=xu, c='blue', linewidth=2, alpha=0.5)
-    plt.annotate('f(xl)', [xl, f(xl)])
-    plt.annotate('f(xu)', [xu, f(xu)])
-    plt.scatter(xm, f(xm), c='red', s=250, alpha=0.5)
-    plt.axvline(x=xm, c='red', linewidth=2, alpha=0.5)
-    plt.annotate('f(xm)', [xm, f(xm)])
-    plt.autoscale()
-    plt.pause(2.0)
-
-    # Check for root
-    if f(xm) == 0 or Epsilon[-1] < eps:
-        print(f'Root found: {xm}')
-        plt.text(0.5, 0.5, f'Root found.\n\n Epsilon% = {Epsilon[-1]:.5f}\n\nRoot ≈ {xm:.7f}\n\nf(xm) = {f(xm):.8f}', 
-                 fontsize=16, horizontalalignment='center', verticalalignment='center', transform=plt.gca().transAxes,
-                 bbox=dict(facecolor='papayawhip', alpha=0.6, edgecolor='papayawhip'))
-        plt.pause(5.0)
-        break
-    else:
-        print(f'{i+1}\t\t{xl:.8f}\t{xu:.8f}\t{xm:.8f}\t{Epsilon[-1]:.8f}\t{f(xm):.8f}')
-
-    # Update bounds based on function signs
-    if f(xl) * f(xm) < 0:
-        xu = xm
-    else:
-        xl = xm
-
-    plt.clf()
-    x = np.linspace(xl - (xu - xl) / 2, xu + (xu - xl) / 2, 1000)
+    # Set up plot
+    x = np.linspace(min(a, b) - 1, max(a, b) + 1, 400)  # Adjust plot range for exp(x)
     y = f(x)
-    plt.plot(x, y, linewidth=3)
-    plt.axhline(y=0, c='black', linewidth=1)
 
-plt.show()
-print('--------------------------------------------------------------------------')
+    plt.figure(figsize=(10, 6))
+    plt.plot(x, y, label='f(x) = exp(x) - 3x', color='blue')  # Update label
+    plt.axhline(0, color='black', linewidth=0.5)
+    plt.xlabel('x')
+    plt.ylabel('f(x)')
+
+    print(f"{'Iteration':<10}{'a':<20}{'b':<20}{'c':<20}{'Epsilon (%)':<20}{'f(c)'}")
+    print("-" * 90)
+
+    while iteration < max_iter:
+        # Calculate the point c where the function is zero
+        c = b - (f(b) * (b - a)) / (f(b) - f(a))
+        epsilon = 0
+        if previous_c is not None:
+            epsilon = abs((c - previous_c) / c) * 100
+
+        # Print the current iteration details
+        print(f"{iteration:<10}{a:<20.10f}{b:<20.10f}{c:<20.10f}{epsilon:<20.10f}{f(c):.10f}")
+
+        # Plot the approximation point
+        plt.scatter(c, f(c), color='red', zorder=5, label=f"Iteration {iteration}")
+
+        if abs(f(c)) < tol:
+            print(f"\nApproximate root found: {c}")
+            break
+        elif f(a) * f(c) < 0:
+            b = c
+        else:
+            a = c
+
+        previous_c = c
+        iteration += 1
+
+    plt.title('False Position Method Iterations')
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+
+    print(f"\nApproximate root after {iteration} iterations: {c}")
+    return c
+
+# Example usage
+try:
+    root = false_position_method(1, 2, 0.0001)
+    print(f"\nRoot found: {round(root, 3)}")
+except ValueError as e:
+    print(e)
+
+# import math
+# import numpy as np
+
+# def f(x):
+#     """
+#     Function for which we are finding the root.
+#     f(x) = math.exp(x) - 3 * x
+#     """
+#     return np.exp(x) - 3 * x
+
+# def false_position_method(a, b, tol, max_iter=100):
+#     """
+#     Finds the root of the function f(x) using the False Position Method and prints
+#     iteration details.
+
+#     Parameters:
+#     a : float
+#         The lower bound of the interval.
+#     b : float
+#         The upper bound of the interval.
+#     tol : float
+#         The tolerance for the convergence criteria.
+#     max_iter : int
+#         The maximum number of iterations (default is 100).
+
+#     Returns:
+#     float
+#         The approximate root of the function.
+#     """
+
+#     if f(a) * f(b) >= 0:
+#         raise ValueError("No root found in the interval; f(a) and f(b) must have opposite signs.")
+
+#     iteration = 0
+#     previous_c = None
+
+#     print(f"{'Iteration':<10}{'a':<20}{'b':<20}{'c':<20}{'Epsilon (%)':<20}{'f(c)'}")
+#     print("-" * 90)
+
+#     while iteration < max_iter:
+#         # Calculate the point c where the function is zero
+#         c = b - (f(b) * (b - a)) / (f(b) - f(a))
+#         epsilon = 0
+#         if previous_c is not None:
+#             epsilon = abs((c - previous_c) / c) * 100
+
+#         # Print the current iteration details
+#         print(f"{iteration:<10}{a:<20.10f}{b:<20.10f}{c:<20.10f}{epsilon:<20.10f}{f(c):.10f}")
+
+#         if abs(f(c)) < tol:
+#             print(f"\nApproximate root found: {c}")
+#             return c
+#         elif f(a) * f(c) < 0:
+#             b = c
+#         else:
+#             a = c
+
+#         previous_c = c
+#         iteration += 1
+
+#     print(f"\nApproximate root after {iteration} iterations: {c}")
+#     return c
+
+# # Example usage
+
+# root = false_position_method(1, 2, 0.0001)
+# print(f"\nRoot found: {round(root, 3)}")
