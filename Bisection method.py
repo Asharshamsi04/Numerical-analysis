@@ -1,9 +1,10 @@
+# import math
 # def f(x):
 #     """
 #     Function for which we are finding the root.
-#     f(x) = x^2 - 11
+#     f(x) = cos(x)-x*exp(x)
 #     """
-#     return x**2 - 11
+#     return math.cos(x)-x*math.exp(x)
 
 # def bisection_method(a, b, tol):
 #     """
@@ -54,7 +55,7 @@
 
 # # Example usage
 # try:
-#     root = bisection_method(-1, 5, 0.00001)
+#     root = bisection_method(2, 1, 0.00001)
 #     print(f"\nRoot found: {round(root, 3)}")
 # except ValueError as e:
 #     print(e)
@@ -63,14 +64,15 @@
             #                                       || BISECTION METHOD with graphs ||
 
 import numpy as np
+import math
 import matplotlib.pyplot as plt
 
 def f(x):
     """
     Function for which we are finding the root.
-    f(x) = x^2 - 11
+    f(x) = cos(x)-x*exp(x)
     """
-    return x**2 - 11
+    return np.cos(x)-x*np.exp(x)
 
 def bisection_method(a, b, tol):
     """
@@ -154,7 +156,7 @@ def bisection_method(a, b, tol):
 
 # Example usage
 try:
-    root = bisection_method(-1, 5, 0.0001)
+    root = bisection_method(-2, -1, 0.0001)
     print(f"\nRoot found: {round(root, 3)}")
 except ValueError as e:
     print(e)
