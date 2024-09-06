@@ -3,14 +3,14 @@ import matplotlib.pyplot as plt
 
 # Define the function whose roots are required
 def f(x):
-    # return x**3+x**2-3*x-3
-    return np.exp(x) - 3 * x 
+
+    return np.cos(x)-x*np.exp(x) 
 
 # Input Parameters
 N = 50           # Max. number of iterations
 eps = 0.01       # Acceptable Error (%) 
-xl = 1           # Lower bound on the root
-xu = 2           # Upper bound on the root
+xl = 0           # Lower bound on the root
+xu = 1           # Upper bound on the root
 
 # Initialize figure for plotting
 fig = plt.figure(figsize=(8, 8), dpi=120)
