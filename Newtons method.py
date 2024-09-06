@@ -40,6 +40,8 @@
 
 
 
+#                                           ||| NEWTON'S METHOD WITH GRAPH  |||
+
 
 import numpy as np
 import matplotlib.pyplot as plt
