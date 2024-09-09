@@ -75,6 +75,7 @@ import matplotlib.pyplot as plt
 def f(x):
     """
     Function for which we are finding the root.
+    f(x) = math.exp(x) - 3 * x
     """
     return np.cos(x)-x*np.exp(x)
 
