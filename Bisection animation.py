@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 
 # Define the function whose roots are required
 def f(x):
-
     return np.cos(x)-x*np.exp(x) 
 
 # Input Parameters
