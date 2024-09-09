@@ -7,14 +7,14 @@
 # def derivFunc(x):
 #     return -np.sin(x) - np.exp(x) - x * np.exp(x)
 
-# def newtonRaphson(x0, tol=1e-6, max_iter=1000):
+# def newton_method(x0, tol=1e-6, max_iter=1000):
 #     x = x0
 #     for i in range(max_iter):
 #         f_x = func(x)
 #         df_x = derivFunc(x)
         
 #         if df_x == 0:
-#             print("Derivative is zero. Newton-Raphson method fails.")
+#             print("Derivative is zero. Newton's method fails.")
 #             return None
         
 #         h = f_x / df_x
@@ -32,7 +32,7 @@
 
 # # Initial guess
 # x0 = 100
-# root = newtonRaphson(x0)
+# root = newton_method(x0)
 # if root is not None:
 #     print(f"Root found: {root}")
 # else:
@@ -53,7 +53,7 @@ def func(x):
 def derivFunc(x):
     return -np.sin(x) - np.exp(x) - x * np.exp(x)
 
-def newtonRaphson(x0, tol=1e-6, max_iter=1000):
+def newton_method(x0, tol=1e-6, max_iter=1000):
     x = x0
     iterations = []
     values = []
@@ -63,7 +63,7 @@ def newtonRaphson(x0, tol=1e-6, max_iter=1000):
         df_x = derivFunc(x)
         
         if df_x == 0:
-            print("Derivative is zero. Newton-Raphson method fails.")
+            print("Derivative is zero. Newton's method fails.")
             return None, iterations, values
         
         h = f_x / df_x
@@ -87,7 +87,7 @@ def newtonRaphson(x0, tol=1e-6, max_iter=1000):
 x0 = 0
 
 # Run Newton-Raphson
-root, iterations, values = newtonRaphson(x0)
+root, iterations, values = newton_method(x0)
 
 if root is not None:
     print(f"Root found: {root}")
@@ -116,7 +116,7 @@ if root is not None:
     plt.scatter(root, func(root), color='green', zorder=10, label='Root')
     plt.annotate(f'Root: {root:.4f}', (root, func(root)), textcoords="offset points", xytext=(0,10), ha='center', fontsize=8, color='green')
 
-plt.title('Newton-Raphson Method for Finding Roots')
+plt.title('Newton's Method for Finding Roots')
 plt.xlabel('x')
 plt.ylabel('f(x)')
 plt.legend()
