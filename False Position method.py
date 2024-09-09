@@ -5,9 +5,8 @@
 # def f(x):
 #     """
 #     Function for which we are finding the root.
-#     f(x) = math.exp(x) - 3 * x
 #     """
-#     return np.exp(x) - 3 * x
+#     return np.cos(x)-x*np.exp(x)
 
 # def false_position_method(a, b, tol, max_iter=100):
 #     """
@@ -76,9 +75,8 @@ import matplotlib.pyplot as plt
 def f(x):
     """
     Function for which we are finding the root.
-    f(x) = math.exp(x) - 3 * x
     """
-    return np.exp(x) - 3 * x  # Element-wise operations (assuming x is a NumPy array)
+    return np.cos(x)-x*np.exp(x)
 
 def false_position_method(a, b, tol, max_iter=100):
     """
@@ -154,7 +152,7 @@ def false_position_method(a, b, tol, max_iter=100):
 
 # Example usage
 try:
-    root = false_position_method(1, 2, 0.0001)
+    root = false_position_method(0, 2, 0.0001)
     print(f"\nRoot found: {round(root, 3)}")
 except ValueError as e:
     print(e)
