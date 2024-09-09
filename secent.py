@@ -1,46 +1,3 @@
-import numpy as np
-
-# Define the function
-def func(x):
-    return np.cos(x) - x * np.exp(x)
-
-def secant_method(x0, x1, tol=1e-6, max_iter=1000):
-    for i in range(max_iter):
-        f_x0 = func(x0)
-        f_x1 = func(x1)
-        
-        if f_x1 == f_x0:
-            print("Division by zero in Secant method.")
-            return None
-        
-        # Secant method formula
-        x2 = x1 - f_x1 * (x1 - x0) / (f_x1 - f_x0)
-        
-        if abs(x2 - x1) < tol:
-            print(f"Convergence reached: x = {x2}")
-            return x2
-        
-        # Update for next iteration
-        x0, x1 = x1, x2
-    
-    print("Maximum iterations reached without convergence.")
-    return None
-
-# Initial guesses
-x0 = 0
-x1 = 1
-
-# Run Secant Method
-root = secant_method(x0, x1)
-
-if root is not None:
-    print(f"Root found: {root}")
-else:
-    print("No root found.")
-
-
-##                                         ||| SECENT METHOD WITH ITERATION TABLE |||
-
 # import numpy as np
 
 # # Define the function
@@ -48,56 +5,99 @@ else:
 #     return np.cos(x) - x * np.exp(x)
 
 # def secant_method(x0, x1, tol=1e-6, max_iter=1000):
-#     iterations = []
-#     values = []
-    
 #     for i in range(max_iter):
 #         f_x0 = func(x0)
 #         f_x1 = func(x1)
         
 #         if f_x1 == f_x0:
 #             print("Division by zero in Secant method.")
-#             return None, iterations, values
+#             return None
         
 #         # Secant method formula
 #         x2 = x1 - f_x1 * (x1 - x0) / (f_x1 - f_x0)
         
-#         # Store iteration details
-#         iterations.append(i + 1)
-#         values.append(x2)
-        
-#         # Print iteration details
-#         print(f"Iteration {i+1}: x = {x2}, f(x) = {func(x2)}")
-        
 #         if abs(x2 - x1) < tol:
 #             print(f"Convergence reached: x = {x2}")
-#             return x2, iterations, values
+#             return x2
         
 #         # Update for next iteration
 #         x0, x1 = x1, x2
     
 #     print("Maximum iterations reached without convergence.")
-#     return None, iterations, values
+#     return None
 
 # # Initial guesses
 # x0 = 0
 # x1 = 1
 
 # # Run Secant Method
-# root, iterations, values = secant_method(x0, x1)
+# root = secant_method(x0, x1)
 
 # if root is not None:
 #     print(f"Root found: {root}")
 # else:
 #     print("No root found.")
 
-# # Display iteration table
-# print("\nIteration Table:")
-# print(f"{'Iteration':<10}{'x value':<20}{'f(x)'}")
-# print("-" * 40)
 
-# for iter_num, val in zip(iterations, values):
-#     print(f"{iter_num:<10}{val:<20.10f}{func(val):.10f}")
+##                                         ||| SECENT METHOD WITH ITERATION TABLE |||
+
+import numpy as np
+
+# Define the function
+def func(x):
+    return np.cos(x) - x * np.exp(x)
+
+def secant_method(x0, x1, tol=1e-6, max_iter=1000):
+    iterations = []
+    values = []
+    
+    for i in range(max_iter):
+        f_x0 = func(x0)
+        f_x1 = func(x1)
+        
+        if f_x1 == f_x0:
+            print("Division by zero in Secant method.")
+            return None, iterations, values
+        
+        # Secant method formula
+        x2 = x1 - f_x1 * (x1 - x0) / (f_x1 - f_x0)
+        
+        # Store iteration details
+        iterations.append(i + 1)
+        values.append(x2)
+        
+        # Print iteration details
+        print(f"Iteration {i+1}: x = {x2}, f(x) = {func(x2)}")
+        
+        if abs(x2 - x1) < tol:
+            print(f"Convergence reached: x = {x2}")
+            return x2, iterations, values
+        
+        # Update for next iteration
+        x0, x1 = x1, x2
+    
+    print("Maximum iterations reached without convergence.")
+    return None, iterations, values
+
+# Initial guesses
+x0 = 0
+x1 = 1
+
+# Run Secant Method
+root, iterations, values = secant_method(x0, x1)
+
+if root is not None:
+    print(f"Root found: {root}")
+else:
+    print("No root found.")
+
+# Display iteration table
+print("\nIteration Table:")
+print(f"{'Iteration':<10}{'x value':<20}{'f(x)'}")
+print("-" * 40)
+
+for iter_num, val in zip(iterations, values):
+    print(f"{iter_num:<10}{val:<20.10f}{func(val):.10f}")
 
 
 #             ||| SECENT METHOD WITH GRAPH |||
